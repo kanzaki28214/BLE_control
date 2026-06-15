@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+    <title>Picomni Rover Controller</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <main class="app">
+      <section class="field-card" aria-label="odometry">
+        <canvas id="field" width="448" height="256"></canvas>
+      </section>
+
+      <div class="turn-track" id="turnStick" aria-label="turn joystick">
+        <div class="turn-knob"></div>
+      </div>
+
+      <section class="controls">
+        <div class="left-controls">
+          <div class="move-stick" id="moveStick" aria-label="move joystick">
+            <div class="move-knob"></div>
+          </div>
+
+          <div class="aux-buttons" aria-label="extra buttons">
+            <button class="pad aux north" data-button="e" type="button">Y</button>
+            <button class="pad aux west" data-button="f" type="button">X</button>
+            <button class="pad aux east" data-button="g" type="button">B</button>
+            <button class="pad aux south" data-button="h" type="button">A</button>
+          </div>
+        </div>
+
+        <div class="right-controls">
+          <button class="connect" id="connectBtn" type="button">CONNECT</button>
+          <div class="status" id="statusText">OFFLINE</div>
+          <div class="buttons">
+            <button class="pad red" data-button="a" type="button">OPEN</button>
+            <button class="pad blue" data-button="b" type="button">CLOSE</button>
+            <button class="pad amber" data-button="c" type="button">UP</button>
+            <button class="pad green" data-button="d" type="button">DOWN</button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
