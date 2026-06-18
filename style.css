@@ -208,7 +208,7 @@ button {
   min-width: 0;
   min-height: 0;
   display: grid;
-  grid-template-rows: 44px 20px minmax(0, 1fr);
+  grid-template-rows: 44px 20px auto minmax(0, 1fr);
   gap: 8px;
 }
 
@@ -241,6 +241,40 @@ button {
   text-overflow: ellipsis;
   font-size: 12px;
   line-height: 20px;
+}
+
+.motor-rps {
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.72);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.motor-rps-title {
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.motor-rps-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.motor-rps-row strong {
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
 }
 
 .buttons {
@@ -362,7 +396,7 @@ button {
   .right-controls {
     flex: 1;
     display: grid;
-    grid-template-rows: 42px 18px minmax(0, 1fr);
+    grid-template-rows: 42px 18px auto minmax(0, 1fr);
     gap: 8px;
   }
 
@@ -409,8 +443,20 @@ button {
   }
 
   .right-controls {
-    grid-template-rows: 40px 18px minmax(0, 1fr);
+    grid-template-rows: 40px 18px auto minmax(0, 1fr);
     gap: 6px;
+  }
+
+  .motor-rps {
+    padding: 6px 8px;
+  }
+
+  .motor-rps-title {
+    display: none;
+  }
+
+  .motor-rps-row {
+    line-height: 1.25;
   }
 
   .connect {

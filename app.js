@@ -19,6 +19,7 @@ const state = {
     h: false,
   },
   odom: { x: 0, y: 0, yaw: 0 },
+  motorRps: [0, 0, 0],
   connected: false,
   busy: false,
   path: [],
@@ -33,6 +34,11 @@ const el = {
   turnStick: document.querySelector("#turnStick"),
   turnKnob: document.querySelector(".turn-knob"),
   pads: [...document.querySelectorAll(".pad")],
+  motorRps: [
+    document.querySelector("#motor1Rps"),
+    document.querySelector("#motor2Rps"),
+    document.querySelector("#motor3Rps"),
+  ],
 };
 
 class PicomniBluetooth {
@@ -167,9 +173,18 @@ function setConnected(connected) {
 function parseOdom(value) {
   if (value.byteLength < 12) throw new Error("Notification payload is shorter than 12 bytes.");
   return {
-    x: value.getFloat32(0, true),
-    y: value.getFloat32(4, true),
-    yaw: value.getFloat32(8, true),
+    odom: {
+      x: value.getFloat32(0, true),
+      y: value.getFloat32(4, true),
+      yaw: value.getFloat32(8, true),
+    },
+    motorRps: value.byteLength >= 24
+      ? [
+          value.getFloat32(12, true),
+          value.getFloat32(16, true),
+          value.getFloat32(20, true),
+        ]
+      : [0, 0, 0],
   };
 }
 
@@ -191,9 +206,12 @@ async function connectRobot() {
     await ble.connect({
       onNotify: (value) => {
         try {
-          state.odom = parseOdom(value);
+          const telemetry = parseOdom(value);
+          state.odom = telemetry.odom;
+          state.motorRps = telemetry.motorRps;
           state.path.push(state.odom);
           if (state.path.length > 400) state.path.shift();
+          updateMotorRps();
         } catch (error) {
           setStatus(error.message);
         }
@@ -325,6 +343,12 @@ function formatValue(value) {
   return `${value < 0 ? "" : " "}${value.toFixed(2).padStart(5, " ")}`;
 }
 
+function updateMotorRps() {
+  for (let i = 0; i < el.motorRps.length; i += 1) {
+    el.motorRps[i].textContent = state.motorRps[i].toFixed(2);
+  }
+}
+
 function drawArrow(ctx, x1, y1, x2, y2, label, dx, dy) {
   const angle = Math.atan2(y2 - y1, x2 - x1);
   ctx.strokeStyle = "#94a3b8";
@@ -422,4 +446,5 @@ setupMoveStick();
 setupTurnStick();
 setupButtons();
 setConnected(false);
+updateMotorRps();
 drawField();
